@@ -1,0 +1,72 @@
+{
+  "name": "star-match",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "eslint": "eslint \"src/**/*.js\"",
+    "start": "concurrently \"yarn run dev:server\" \"yarn run dev:bundle\"",
+    "test": "jest",
+    "dev:server": "cross-env NODE_PATH=./src nodemon --exec \"babel-node src/server/server.js\" --ignore .reactful.json --ignore public/",
+    "dev:bundle": "webpack -wd",
+    "verify-tests": "jest --coverage",
+    "build:react": "cross-env NODE_ENV=production webpack --progress -p",
+    "build:node": "babel src -d build --config-file ./babel-node.config.js --copy-files",
+    "build:all": "yarn install && yarn run build:react && yarn run build:node",
+    "prod:start": "cross-env NODE_ENV=production NODE_PATH=./build pm2 start -i max build/server/server.js --update-env --name star-matchProd",
+    "prod:stop": "pm2 stop star-matchProd",
+    "prod:reload": "pm2 reload --update-env star-matchProd",
+    "prod:logs": "pm2 logs --update-env star-matchProd"
+  },
+  "jest": {
+    "modulePaths": [
+      "./src"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.js"
+    ]
+  },
+  "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/runtime": "^7.9.2",
+    "babel-loader": "^8.1.0",
+    "body-parser": "^1.19.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "ejs": "^3.1.2",
+    "express": "4",
+    "mini-css-extract-plugin": "^0.9.0",
+    "morgan": "^1.10.0",
+    "pm2": "^4.4.0",
+    "react": "16",
+    "react-dom": "16",
+    "regenerator-runtime": "^0.13.5",
+    "serialize-javascript": "^3.0.0",
+    "style-loader": "^1.2.0",
+    "webpack": "4",
+    "webpack-chunk-hash": "^0.6.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.8.7",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.3",
+    "@testing-library/user-event": "^10.1.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.4.0",
+    "concurrently": "^5.2.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "jest": "^25.4.0",
+    "nodemon": "^2.0.3",
+    "reactful": "^2.2.0"
+  }
+}
